@@ -14,6 +14,8 @@ class GETpro extends StatefulWidget {
 class _GETproState extends State<GETpro> {
   Client client = http.Client();
   var demende;
+  var code;
+  var ingredient;
 
   @override
   void initState() {
@@ -22,14 +24,14 @@ class _GETproState extends State<GETpro> {
   }
 
   getProduct() async {
-    var url = Uri.parse(
-        "https://world.openfoodfacts.org/api/v0/product/0048151623426.json");
+    var url = getProduit("0048151623426");
     var response = await http.get(url);
     var body = jsonDecode(response.body);
     setState(() {
-      demende = body['code'];
+      ingredient = body['product']['ingredients_hierarchy'];
+      code = body['code'];
+      demende = body['product']['image_ingredients_url'];
     });
-    print(body['code']);
   }
 
   @override
@@ -39,8 +41,13 @@ class _GETproState extends State<GETpro> {
         title: Text("SMART SCAN"),
       ),
       body: Container(
-        child: Text("${demende}"),
-      ),
+          child: Column(
+        children: [
+          Text('le code de produit est ${code}'),
+          Image.network(demende),
+          Text('${ingredient}'),
+        ],
+      )),
     );
   }
 }
