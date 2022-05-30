@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:bar_code/comp/model/product.dart';
 import 'package:bar_code/comp/url.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
@@ -41,28 +42,22 @@ class _GetProductState extends State<GetProduct> {
   }
 }
 */
-class getProduct extends StatefulWidget {
-  const getProduct({Key? key}) : super(key: key);
+/*
 
-  @override
-  State<getProduct> createState() => _getProductState();
-}
-
-class _getProductState extends State<getProduct> {
+class getProduct {
   Client client = http.Client();
 
-  produit() async {
-    final response = await client.get(getProduit(0048151623426));
-    final json = "[" + response.body + "]";
-    final list = (jsonDecode(json) as List<dynamic>);
-    return list;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        child: Text(
-      produit().toString(),
-    ));
+  Future<List<ProductModel>?> produit() async {
+    http.Response response = await http.get(getProduit(0048151623426));
+    if (response.statusCode == 200) {
+      var body = jsonDecode(response.body);
+      List<ProductModel> Produit = [];
+      for (var item in body) {
+        Produit.add(ProductModel.fromJson(item));
+      }
+      return Produit;
+    }
+    return null;
   }
 }
+*/
